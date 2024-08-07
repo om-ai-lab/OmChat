@@ -21,7 +21,7 @@ class InternVITVisionTower(AbsVisionTower):
         else:
             self.cfg_only = InternVisionConfig.from_pretrained(self.vision_tower_name)
 
-    def load_model(self, image_size=224, is_train=False):
+    def load_model(self, is_train=False):
         crop_size = 448 if "448" in self.vision_tower_name else 336
         self.image_processor = CLIPImageProcessor(
                 crop_size=crop_size, do_center_crop=True, do_normalize=True, do_resize=True,

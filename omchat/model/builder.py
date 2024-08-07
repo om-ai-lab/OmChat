@@ -17,34 +17,33 @@ import os
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, AutoConfig
 from peft import PeftModel
-from omchat.model import LlavaLlamaForCausalLM, OmChatQwen2ForCausalLM, OmChatLlamaForCausalLM
+from omchat.model import OmChatQwen2ForCausalLM
 
-def load_pretrained_model(model_path, model_name, device_map="auto", image_size=448):
-    kwargs = {"device_map": device_map}
+def load_pretrained_model(model_path, model_name, device_map="auto", device="cuda", **kwargs):
+    #kwargs = {"device_map": device_map, **kwargs}
+    kwargs = {"device_map": {'vision_tower': 'cuda:0', 'embed_tokens':'cuda:0', 'layers':'cuda:0','norm':'cuda:0','lm_head':'cuda:0','model':'cuda:0', 'mm_projector': 'cuda:0'}}
+    if device != "cuda":
+        kwargs['device_map'] = {"":device}
+    
+
     kwargs['torch_dtype'] = torch.float16
 
-    if 'omchat' in model_name.lower():
-        tokenizer = AutoTokenizer.from_pretrained(model_base or model_path, use_fast=False, trust_remote_code=True)
-        model = load_omchat_model(model_path, kwargs)
-    else:
-        tokenizer = AutoTokenizer.from_pretrained(model_base or model_path, use_fast=False)
-        model = AutoModelForCausalLM.from_pretrained(model_base or model_path, low_cpu_mem_usage=True, **kwargs)
+    tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=False)
+    model = load_omchat_model(model_path, kwargs)
 
-    image_processor = load_image_processor(model, image_size)
+    image_processor = load_image_processor(model, device)
     context_len = getattr(model.config, "max_sequence_length", 2048)
     return tokenizer, model, image_processor, context_len
 
 
 def load_omchat_model(model_path, kwargs):
-    if "qwen" in model_path.lower():
-        return OmChatQwen2ForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=True, **kwargs)
-    return OmChatLlamaForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=True, **kwargs)
+    return OmChatQwen2ForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=True, delay_load=False, **kwargs)
 
 
-def load_image_processor(model, image_size):
+def load_image_processor(model, device):
     vision_tower = model.get_vision_tower() if hasattr(model, 'get_vision_tower') else None
     if vision_tower and not vision_tower.is_loaded:
-        vision_tower.load_model(image_size=image_size, is_train=False)
-        vision_tower.to(device='cuda', dtype=torch.float16)
+        vision_tower.load_model(is_train=False)
+        vision_tower.to(device=device, dtype=torch.float16)
     return vision_tower.image_processor if vision_tower else None
 

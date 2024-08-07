@@ -1,1 +1,1 @@
-from .model import OmChatLlamaForCausalLM
+#from .model import OmChatLlamaForCausalLM
