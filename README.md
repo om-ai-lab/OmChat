@@ -1,4 +1,4 @@
-# OmChat: A Series of Powerful Native Multimodal Language Models
+# OmChat: A Family of Powerful Native Multimodal Language Models
 ......
 
 ## 🗓️ Updates
