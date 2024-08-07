@@ -1,4 +1,4 @@
-# OmChat: A suite of multimodal language models that are powerful and efficiently
+# OmChat: A Series of Powerful Native Multimodal Language Models
 ......
 
 ## 🗓️ Updates
