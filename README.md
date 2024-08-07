@@ -29,6 +29,16 @@ pip install -e ".[train]"
 bash eval.sh MODEL_PATH all
 ```
 
+### How to test
+```bash
+bash test.sh MODEL_PATH
+```
+
+### Available Models from Om AI
+- [OmChat8B]()
+- [OmChat15B]()
+
+
 #### Model Comparison Results (less than 20B)
 
 | Rank | Method                    | Avg Score |MMBench_V11|MMStar | MMMU_VAL | MathVista |
