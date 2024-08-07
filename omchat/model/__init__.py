@@ -1,0 +1,3 @@
+from .language_model.omchat_llama import OmChatLlamaForCausalLM, OmChatConfig
+from .language_model.omchat_qwen2 import OmChatQwen2ForCausalLM, OmChatQwen2Config
+from .language_model.omchat_qwen2_moe import OmChatQwen2MoeForCausalLM, OmChatQwen2MoeConfig
