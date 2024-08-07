@@ -1,4 +1,5 @@
-# OmChat: A suite of multimodal language models that are powerful and efficientI
+# OmChat: A suite of multimodal language models that are powerful and efficiently
+......
 
 ## 🗓️ Updates
 * 08/10/2024: The OmChat open-source project has been unveiled. 🎉
@@ -24,7 +25,11 @@ pip install -e ".[train]"
 ```
 
 ### Evaluation
-# Model Comparison Results (less than 20B)
+```bash
+bash eval.sh MODEL_PATH all
+```
+
+#### Model Comparison Results (less than 20B)
 
 | Rank | Method                    | Avg Score |MMBench_V11|MMStar | MMMU_VAL | MathVista |
 |------|---------------------------|-----------|----------|--------|----------|-----------|
