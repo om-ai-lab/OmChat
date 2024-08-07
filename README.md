@@ -24,14 +24,27 @@ pip install --upgrade pip  # Enable PEP 660 support.
 pip install -e ".[train]"
 ```
 
-### Evaluation
+### How to test a single image
 ```bash
-bash eval.sh MODEL_PATH all
+python single_inference.py --model-path path-to-omchat-model --image-path path-to-image --question question-content
 ```
 
-### How to test
-```bash
-bash test.sh MODEL_PATH
+### Command-Line Interface
+Execute conversational inference through the command line interface
+```
+python cli.py --model-path path-to-omchat-model --image-path path-to-image
+
+```
+Examples
+
+```
+User: how tall is he?
+Asistant: The question is "how tall is he?". The question is asking about the height of the person in the picture. The answer is giving the height of the person in feet and inches. The person is 6 feet and 2 inches tall.
+The answer is: 6'2"
+
+User: how old is he looks like?
+AsistantThe question is "how old is he looks like?". The question is asking about the age of the person in the picture. The person in the picture is a man. He is wearing a yellow shirt and he is ironing a shirt. He looks like he is in his 40s. So the answer is "40".
+The answer is: 40
 ```
 
 ### Available Models from Om AI
@@ -44,8 +57,8 @@ bash test.sh MODEL_PATH
 | Rank | Method                    | Avg Score |MMBench_V11|MMStar | MMMU_VAL | MathVista |
 |------|---------------------------|-----------|----------|--------|----------|-----------|
 | 1    | InternVL2-8B              | 64.1      | 79.4     | 61.5   | 51.2     | 58.3      |
-| 2    | InternLM-XComposer2.5     | 61.1      | 79.4     | 59.9   | 42.9     | 63.7      |
-| 3    | Omchat15B                 | 61.1      | 77.2     | 58.4   | 44.6     | 57.2      |
+| 2    | Omchat15B                 | 62.0      | 79.1     | 58.9   | 49.4     | 57.3      |
+| 3    | InternLM-XComposer2.5     | 61.1      | 79.4     | 59.9   | 42.9     | 63.7      |
 | 4    | InternVL2-4B              | 60.6      | 73.6     | 53.9   | 48.3     | 58.1      |
 | 5    | GLM-4v-9B                 | 59.1      | 67.9     | 54.8   | 46.9     | 51.1      |
 | 6    | InternLM-XComposer2-4     | 58.8      | 76.5     | 55.3   | 39.7     | 59.4      |
