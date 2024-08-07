@@ -1115,12 +1115,14 @@ def train():
             model = OmChatQwen2ForCausalLM.from_pretrained(
                     model_args.model_name_or_path,
                     cache_dir=training_args.cache_dir,
+                    delay_load=not "omchat" in model_args.model_name_or_path.lower(),
                     **bnb_model_from_pretrained_args
                 )
         elif 'qwen' in model_args.model_name_or_path.lower() and 'a14b' in model_args.model_name_or_path.lower():
             model = OmChatQwen2MoeForCausalLM.from_pretrained(
                     model_args.model_name_or_path,
                     cache_dir=training_args.cache_dir,
+                    delay_load=not "omchat" in model_args.model_name_or_path.lower(),
                     **bnb_model_from_pretrained_args
                 )
         else:

@@ -29,7 +29,9 @@ class OmChatQwen2Model(OmChatMetaModel, Qwen2Model):
 class OmChatQwen2ForCausalLM(Qwen2ForCausalLM, OmChatMetaForCausalLM):
     config_class = OmChatQwen2Config
 
-    def __init__(self, config):
+    def __init__(self, config, delay_load=True):
+        if not hasattr(config, 'delay_load'):
+            config.delay_load = delay_load
         super(Qwen2ForCausalLM, self).__init__(config)
         self.model = OmChatQwen2Model(config)
         self.vocab_size = config.vocab_size

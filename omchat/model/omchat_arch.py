@@ -22,8 +22,10 @@ class OmChatMetaModel:
     def __init__(self, config):
         super().__init__()
         self.config = config
-        self.vision_tower = build_vision_tower(config, delay_load=True) if config.mm_vision_tower else None
-        self.mm_projector = build_vision_projector(config) if config.mm_vision_tower else None
+        if getattr(config, "mm_vision_tower", None) is not None:
+            self.vision_tower = build_vision_tower(config, delay_load=getattr(config, 'delay_load', True))
+        if getattr(config, "mm_vision_tower", None) is not None:
+            self.mm_projector = build_vision_projector(config)
 
     def get_vision_tower(self):
         if isinstance(self.vision_tower, list):
