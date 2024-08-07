@@ -1,7 +1,9 @@
 # OmChat: A Family of Powerful Native Multimodal Language Models
-......
+We are thrilled to announce the release of OmChat Beta 2.0, a research version of our models from Om AI. This release includes the Qwen2 7B LLM-base and the InterVIT6B vision tower-based model, combining to form the OmChat Beta 13B model. These models are now available as open-source for researchers in the multimodal field, aimed at advancing meaningful research and contributing to the AI ecosystem's progress.
 
-## 🗓️ Updates
+In the near future, we plan to release OmChat Beta 2.1, which will include support for long context as detailed in the OmChat paper, as well as a lighter version of the model. We will continue to update our latest versions for research purposes. For performance evaluation, we have tested our models using the OpenCompass benchmarks.
+
+## Updates
 * 08/10/2024: The OmChat open-source project has been unveiled. 🎉
 * 07/06/2024: [The OmChat research paper has been published.](https://arxiv.org/abs/2407.04923)
 
