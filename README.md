@@ -44,9 +44,6 @@ User: how tall is he?
 Asistant: The question is "how tall is he?". The question is asking about the height of the person in the picture. The answer is giving the height of the person in feet and inches. The person is 6 feet and 2 inches tall.
 The answer is: 6'2"
 
-User: how old is he looks like?
-AsistantThe question is "how old is he looks like?". The question is asking about the age of the person in the picture. The person in the picture is a man. He is wearing a yellow shirt and he is ironing a shirt. He looks like he is in his 40s. So the answer is "40".
-The answer is: 40
 ```
 
 ### Available Models from Om AI
