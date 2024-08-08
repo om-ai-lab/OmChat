@@ -51,7 +51,6 @@ class InternVITVisionTower(AbsVisionTower):
                 image_features.append(image_feature)
         else:
             image_forward_outs = self.vision_tower(images.to(device=self.device, dtype=torch.float16), output_hidden_states=True)
-            #image_forward_outs = self.vision_tower(images.to(device=self.device, dtype=torch.bfloat16), output_hidden_states=True)
             image_features = self.feature_select(image_forward_outs).to(images.dtype)
 
         return image_features
