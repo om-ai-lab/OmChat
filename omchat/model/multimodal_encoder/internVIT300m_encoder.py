@@ -28,7 +28,8 @@ class InternVIT300mVisionTower(AbsVisionTower):
                 crop_size=crop_size, do_center_crop=True, do_normalize=True, do_resize=True,
                 image_mean=[0.485, 0.456, 0.406], image_std=[0.229, 0.224, 0.225], size=crop_size
             )
-        self.vision_tower = InternVisionModel.from_pretrained(self.vision_tower_name,torch_dtype=torch.bfloat16)
+        #self.vision_tower = InternVisionModel.from_pretrained(self.vision_tower_name,torch_dtype=torch.bfloat16)
+        self.vision_tower = InternVisionModel(InternVisionConfig())
         self.vision_tower.requires_grad_(False)
         self.is_loaded = True
 
@@ -50,7 +51,7 @@ class InternVIT300mVisionTower(AbsVisionTower):
                 image_feature = self.feature_select(image_forward_out).to(image.dtype)
                 image_features.append(image_feature)
         else:
-            image_forward_outs = self.vision_tower(images.to(device=self.device, dtype=torch.bfloat16), output_hidden_states=True)
+            image_forward_outs = self.vision_tower(images.to(device=self.device, dtype=torch.float16), output_hidden_states=True)
             image_features = self.feature_select(image_forward_outs).to(images.dtype)
 
         return image_features
