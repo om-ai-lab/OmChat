@@ -11,7 +11,37 @@ from omchat.mm_utils import (
 import torch
 from omchat.mm_utils import tokenizer_image_token, process_anyres_image
 
-
+def get_context(
+    text: str,
+    tokenizer: PreTrainedTokenizer,
+    initial_prompt="You are a helpful assistant.",
+    image=None, 
+    image_processor=None, 
+    image_grid_pinpoints=None
+    ):
+    if image:
+        image_patches, best_res = process_anyres_image(image, image_processor, image_grid_pinpoints, True,return_best_res=True)
+        n = len(image_patches)
+        image_tensor = torch.stack(image_patches, dim=0)
+        image_tensor = image_tensor.half().cuda()
+ 
+        inp, context_tokens = make_context(
+            tokenizer,
+            "<image>\n"+"\n".join(["patch:<image>"]*(n-1)) +"\n"+ text.replace("<image>", "").strip(),
+            None,
+            initial_prompt,
+        )
+    else:
+        inp, context_tokens = make_context(
+            tokenizer,
+            qs.replace("<image>", "").strip(),
+            None,
+            initial_prompt,
+        )
+        image_tensor = None
+ 
+    return inp, context_tokens, image_tensor
+ 
 def get_image_context(
     model_name, 
     image, 

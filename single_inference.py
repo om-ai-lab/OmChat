@@ -24,8 +24,7 @@ from typing import List, Tuple
 import requests
 from io import BytesIO
 from transformers import TextStreamer
-from omchat.eval.make_context import make_context,  get_image_context
-
+from omchat.make_context import make_context,  get_image_context, get_context
 
 
 def load_image(image_file):
@@ -37,15 +36,10 @@ def load_image(image_file):
     return image
 
 
-def get_response(text, image_path=None, prompt="You are a helpful assistant.", image_processor=None, model_name=None, tokenizer=None,image_grid_pinpoints=None):
-    if image_path:
-        image = load_image(image_path)
-        inp, context_tokens, image_tensor = get_image_context(model_name, image, image_processor, image_grid_pinpoints, tokenizer, text)
-    else:
-        image_tensor = None
-        inp, context_tokens = make_context(tokenizer, text, None, prompt)
+def get_response(text, image_path=None, initial_prompt="You are a helpful assistant.", image_processor=None, model_name=None, tokenizer=None,image_grid_pinpoints=None):
+    image = load_image(image_path) if image_path else None
+    inp, context_tokens, image_tensor = get_context(text=text, image=image, image_processor=image_processor, image_grid_pinpoints=image_grid_pinpoints, tokenizer=tokenizer, initial_prompt=initial_prompt)
     return context_tokens, image_tensor
-
 
 
 def main(args):

@@ -20,8 +20,7 @@ from peft import PeftModel
 from omchat.model import OmChatQwen2ForCausalLM
 
 def load_pretrained_model(model_path, model_name, device_map="auto", device="cuda", **kwargs):
-    #kwargs = {"device_map": device_map, **kwargs}
-    kwargs = {"device_map": {'vision_tower': 'cuda:0', 'embed_tokens':'cuda:0', 'layers':'cuda:0','norm':'cuda:0','lm_head':'cuda:0','model':'cuda:0', 'mm_projector': 'cuda:0'}}
+    kwargs = {"device_map": device_map, **kwargs}
     if device != "cuda":
         kwargs['device_map'] = {"":device}
     
