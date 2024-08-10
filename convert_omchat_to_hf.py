@@ -65,9 +65,9 @@ def load_image():
     return image
 
 
-def convert_omchat_to_hf(filepath, pytorch_dump_folder_path, push_to_hub=False):
+def convert_omchat_to_hf(file_folder, pytorch_dump_folder_path, text_model_path, image_model_path, push_to_hub=False):
     # load original config
-    #filepath = hf_hub_download(repo_id=model_id, filename="config.json", repo_type="model")
+    file_path = os.path.join(file_folder, "config.json")
 
     # read json
     with open(filepath) as f:
@@ -75,16 +75,14 @@ def convert_omchat_to_hf(filepath, pytorch_dump_folder_path, push_to_hub=False):
         print(data)
 
     vision_model_id = data["mm_vision_tower"]
-    text_model_id = "../resources/Qwen2-7B"
 
     torch.set_default_dtype(torch.float16)
-    text_config = AutoConfig.from_pretrained(text_model_id)
+    text_config = AutoConfig.from_pretrained(text_model_path)
 
     use_fast = True
-    tokenizer = AutoTokenizer.from_pretrained(text_model_id, use_fast=use_fast)
-    #tokenizer.add_tokens(AddedToken("<image>", special=True, normalized=False), special_tokens=True)
+    tokenizer = AutoTokenizer.from_pretrained(text_model_path, use_fast=use_fast)
 
-    image_processor = OmChatImageProcessor.from_pretrained("../resources/InternViT-6B-448px-V1-5")
+    image_processor = OmChatImageProcessor.from_pretrained(image_model_path)
     processor = OmChatProcessor(tokenizer=tokenizer, image_processor=image_processor)
     print (data)
     
@@ -106,17 +104,6 @@ def convert_omchat_to_hf(filepath, pytorch_dump_folder_path, push_to_hub=False):
     Path(pytorch_dump_folder_path).mkdir(exist_ok=True)
     model.save_pretrained(pytorch_dump_folder_path)
     processor.save_pretrained(pytorch_dump_folder_path)
-    exit()
-    #processor.save_pretrained(pytorch_dump_folder_path)
 
-    # Make space so we can load the model properly now.
-    #del state_dict
-    #gc.collect()
-
-    # Load everything back for inference tests in float32 because prev script was written as that
-    # Though it's mostly loaded in fp16 as original weights are in fp16
-
-    #model = OmChatForConditionalGeneration.from_pretrained(pytorch_dump_folder_path, device_map="auto")
-    #processor = OmChatProcessor.from_pretrained(pytorch_dump_folder_path)
 if __name__ == "__main__":
-    convert_omchat_to_hf("omchat-beta2/config.json", "omchat-beta2_hf")
+    convert_omchat_to_hf("omchat-beta2/config.json", text_model_path="../resources/Qwen2-7B", pytorch_dump_folder_path="omchat-beta2_hf", image_model_path="../resources/InternViT-6B-448px-V1-5")
