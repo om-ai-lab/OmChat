@@ -47,6 +47,10 @@ The answer is: 6'2"
 ```
 ### An Example with Huggingface transformers
 Download huggingface model
+```bash
+git lfs install
+git clone https://huggingface.co/omlab/omchat-v2.0-13B-single-beta_hf
+```
 
 ```python
 from transformers import AutoModel, AutoProcessor, AutoTokenizer
@@ -55,8 +59,8 @@ import requests
 import torch
 from transformers import TextStreamer
 
-model = AutoModel.from_pretrained("/data2/omchat_dev/omchat/checkpoints/omchat-beta2_hf",trust_remote_code=True, torch_dtype=torch.float16).cuda().eval()
-processor = AutoProcessor.from_pretrained("/data2/omchat_dev/omchat/checkpoints/omchat-beta2_hf",trust_remote_code=True)
+model = AutoModel.from_pretrained("/omlab/omchat-v2.0-13B-single-beta_hf",trust_remote_code=True, torch_dtype=torch.float16).cuda().eval()
+processor = AutoProcessor.from_pretrained("/omlab/omchat-v2.0-13B-single-beta_hf", trust_remote_code=True)
 
 url = "https://www.ilankelman.org/stopsigns/australia.jpg"
 image = Image.open(requests.get(url, stream=True).raw)
@@ -68,10 +72,12 @@ with torch.inference_mode():
 
 outputs = processor.tokenizer.decode(output_ids[0, inputs.input_ids.shape[1] :]).strip()
 print (outputs)
+# The image features a stop sign in front of a Chinese archway, with a black car driving past. The stop sign is located on the left side of the scene, while the car is on the right side. There are also two statues of lions on either side of the archway, adding to the cultural ambiance of the scene.<|im_end|>
+
 ```
-### Available Models from Om AI
-- [OmChat8B]()
-- [OmChat15B]()
+
+### Available HF Models from Om AI
+- [omchat-v2.0-13B-single-beta_hf](https://huggingface.co/omlab/omchat-v2.0-13B-single-beta_hf) Currently, it supports only single images, but we will soon release models with multi-image and video support.
 
 
 #### Model Comparison Results (less than 20B)
