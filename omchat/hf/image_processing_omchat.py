@@ -692,6 +692,7 @@ class OmChatImageProcessor(BaseImageProcessor):
 
         new_images = []
         image_sizes = [get_image_size(image, channel_dim=input_data_format) for image in images]
+        num_patches = []
         for image in images:
             # convert image into a list of patches
             # we intentially use the same data format as the input data format
@@ -721,8 +722,12 @@ class OmChatImageProcessor(BaseImageProcessor):
                 data_format=data_format,
                 input_data_format=input_data_format,
             )
+            num_patches.append(len(pixel_values))
+            pixel_values = np.array(pixel_values)
             new_images.append(pixel_values)
+        processed_images = self._pad_for_batching(new_images)
 
         return BatchFeature(
-            data={"pixel_values": new_images}, tensor_type=return_tensors
+            #data={"pixel_values": new_images}, tensor_type=return_tensors
+            data={"pixel_values": processed_images, "num_patches":num_patches}, tensor_type=return_tensors
         )

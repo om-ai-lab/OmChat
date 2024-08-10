@@ -130,6 +130,16 @@ def make_context(
 
     return raw_text, context_tokens
 
+def split_tensor(A, B):
+    split_tensors = []
+    start_idx = 0
+
+    for i, size in enumerate(B.tolist()):
+        split_tensor = A[i, :size, :, :, :]
+        split_tensors.append(split_tensor)  # Take the first element from the batch dimension
+
+    return split_tensors
+
 class OmChatProcessor(ProcessorMixin):
     r"""
     Constructs a OmChat processor which wraps a OmChat image processor and a LLaMa tokenizer into a single processor.
@@ -213,15 +223,27 @@ class OmChatProcessor(ProcessorMixin):
             new_images = []
             new_texts = []
             img = image_inputs["pixel_values"]
-            n = img.shape[1]
-            inp, context_tokens = make_context(
-                self.tokenizer,
-                "<image>\n"+"\n".join(["patch:<image>"]*(n-1)) +"\n"+ text.replace("<image>", "").strip(),
-                None,
-                "You are a helpful assistant.",
-            )
+            num_patches = image_inputs["num_patches"]
+            img = split_tensor(img, num_patches)
+            if len(img) == 1:
+                n = num_patches.tolist()[0]
+                inp, context_tokens = make_context(
+                    self.tokenizer,
+                    "<image>\n"+"\n".join(["patch:<image>"]*(n-1)) +"\n"+ text.replace("<image>", "").strip(),
+                    None,
+                    "You are a helpful assistant.",
+                )
+            
+            else:
+                texts = text.split("<image>")
+                final =texts[0]
+                for i, n in enumerate(num_patches.tolist()):
+                    final+= "<image>\n"+"\n".join(["patch:<image>"]*(n-1))
+                    if i+1 < len(texts):
+                        final += texts[i+1]
+                inp, context_tokens = make_context(self.tokenizer, final.strip(), None, "You are a helpful assistant.")
             text_inputs = {"input_ids": torch.tensor([context_tokens])}
-            image_inputs = {"images":img.squeeze(0)}
+            image_inputs = {"images":torch.cat(img, dim=0)}
         else:
             image_inputs = {}
             inp, context_tokens = make_context(
