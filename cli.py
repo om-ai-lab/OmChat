@@ -17,7 +17,6 @@ from omchat.utils import disable_torch_init
 from omchat.mm_utils import (
     tokenizer_image_token,
     get_model_name_from_path,
-    KeywordsStoppingCriteria,
 )
 from PIL import Image
 from typing import List, Tuple
@@ -56,8 +55,6 @@ def main(args):
 
         context_tokens, image_tensor = get_response(question, args.image_path, model_name=model_name, tokenizer=tokenizer, image_processor=image_processor, image_grid_pinpoints=image_grid_pinpoints)
         input_ids = torch.tensor([context_tokens]).cuda()
-        keywords = ["<|im_end|>"]
-        stopping_criteria = KeywordsStoppingCriteria(keywords, tokenizer, input_ids)
         streamer = TextStreamer(tokenizer, skip_prompt=True, skip_special_tokens=True)
         model.generation_config.pad_token_id = tokenizer.pad_token_id
 
@@ -70,11 +67,10 @@ def main(args):
                 max_new_tokens=1024,
                 streamer=streamer,
                 use_cache=True,
-                stopping_criteria=[stopping_criteria],
+                eos_token_id=151645
             )
 
         outputs = tokenizer.decode(output_ids[0, input_ids.shape[1]:]).strip()
-        #print(f"Assistant: {outputs}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
