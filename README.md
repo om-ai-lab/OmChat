@@ -60,8 +60,8 @@ import requests
 import torch
 from transformers import TextStreamer
 
-model = AutoModel.from_pretrained("/omlab/omchat-v2.0-13B-single-beta_hf",trust_remote_code=True, torch_dtype=torch.float16).cuda().eval()
-processor = AutoProcessor.from_pretrained("/omlab/omchat-v2.0-13B-single-beta_hf", trust_remote_code=True)
+model = AutoModel.from_pretrained("omlab/omchat-v2.0-13B-single-beta_hf",trust_remote_code=True, torch_dtype=torch.float16).cuda().eval()
+processor = AutoProcessor.from_pretrained("omlab/omchat-v2.0-13B-single-beta_hf", trust_remote_code=True)
 
 url = "https://www.ilankelman.org/stopsigns/australia.jpg"
 image = Image.open(requests.get(url, stream=True).raw)
