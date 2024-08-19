@@ -23,7 +23,8 @@ cd OmChat
 conda create -n omchat python=3.10 -y
 conda activate omchat
 pip install --upgrade pip  # Enable PEP 660 support.
-pip install -e ".[train]"
+pip install -e .
+pip install flash-attn
 ```
 
 ### How to test a single image
