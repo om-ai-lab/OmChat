@@ -120,7 +120,7 @@ The codebase and models are built upon the following projects:
 ## Projects from Om AI Team
 If you are intrigued by multimodal algorithms, large language models, and agent technologies, we invite you to delve deeper into our research endeavors:  
 🔆 [OmAgent: A Multi-modal Agent Framework for Complex Video Understanding with Task Divide-and-Conquer](https://arxiv.org/abs/2406.16620)
-🏠 [Github Repository](https://github.com/om-ai-lab/OmAgentn)
+🏠 [Github Repository](https://github.com/om-ai-lab/OmAgent)
 
 🔆 [How to Evaluate the Generalization of Detection? A Benchmark for Comprehensive Open-Vocabulary Detection](https://arxiv.org/abs/2308.13177)(AAAI24)   
 🏠 [Github Repository](https://github.com/om-ai-lab/OVDEval/tree/main)
