@@ -11,7 +11,6 @@ from omchat.constants import (
     DEFAULT_IM_START_TOKEN,
     DEFAULT_IM_END_TOKEN,
 )
-from omchat.conversation import conv_templates, SeparatorStyle
 from omchat.model.builder import load_pretrained_model
 from omchat.utils import disable_torch_init
 from omchat.mm_utils import (
