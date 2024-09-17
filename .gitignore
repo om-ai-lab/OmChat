@@ -4,6 +4,7 @@ __pycache__/
 *$py.class
 .swp
 .nfs*
+.idea
 
 
 # C extensions
